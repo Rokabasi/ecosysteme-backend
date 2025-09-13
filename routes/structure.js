@@ -8,7 +8,6 @@ const {
   Structure_renseignement,
   Document
 } = require("../models");
-const { Op } = require('sequelize');
 const upload = require("../utils/multer");
 
 // GET all structures

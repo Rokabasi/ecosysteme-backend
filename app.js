@@ -7,10 +7,10 @@ require('dotenv').config();
 require("./config/db").sync();
 
 const indexRouter = require('./routes/index');
-const registerRouter = require('./routes/register');
-const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const structureRouter = require('./routes/structure');
+const provinceRouter = require('./routes/province');
+const domaineRouter = require('./routes/domaine');
 
 const app = express();
 
@@ -26,14 +26,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Public routes
 app.use('/auth', authRouter);
+app.use('/provinces', provinceRouter);
+app.use('/domaines', domaineRouter);
+app.use('/structures', structureRouter);
+app.use('/', indexRouter);  
 
-// API routes
-app.use('/api', [
-  indexRouter,
-  usersRouter,
-  registerRouter,
-  structureRouter
-]);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
