@@ -21,6 +21,9 @@ module.exports = {
       doc_designation: {
         type: Sequelize.STRING
       },
+      doc_size:{
+        type: Sequelize.STRING
+      }
     });
     await queryInterface.addConstraint('Documents', {
       fields:['str_id'],

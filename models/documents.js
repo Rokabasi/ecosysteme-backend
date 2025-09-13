@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
     str_id: DataTypes.UUID,
     doc_path: DataTypes.TEXT,
     doc_name: DataTypes.STRING,
+    doc_size:DataTypes.STRING,
     doc_designation: DataTypes.STRING
   }, {
     sequelize,
