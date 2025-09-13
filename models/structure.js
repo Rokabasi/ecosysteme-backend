@@ -1,0 +1,48 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Structure extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+       Structure.hasMany(models.Province_structure,{
+        foreignKey: 'str_id'
+      })
+      Structure.hasMany(models.Domaine_structure,{
+        foreignKey: 'str_id'
+      })
+      Structure.hasMany(models.Document,{
+        foreignKey: 'str_id'
+      })
+    }
+  }
+  Structure.init({
+    str_id:{
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    str_designation: DataTypes.STRING,
+    str_sigle: DataTypes.STRING,
+    str_annee_creation: DataTypes.DATEONLY,
+    str_adresse_siege_sociale: DataTypes.TEXT,
+    str_nom_representant_legal: DataTypes.STRING,
+    str_fonction_represenatant: DataTypes.STRING,
+    str_telephone: DataTypes.STRING,
+    str_email: DataTypes.STRING,
+    str_site_web: DataTypes.STRING,
+    str_mission: DataTypes.TEXT,
+    str_nombre_employe_actif: DataTypes.INTEGER,
+    str_resultat_operationel: DataTypes.TEXT
+  }, {
+    sequelize,
+    modelName: 'Structure',
+  });
+  return Structure;
+};
