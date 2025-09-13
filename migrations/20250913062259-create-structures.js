@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       str_annee_creation: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.STRING
       },
       str_adresse_siege_sociale: {
         type: Sequelize.TEXT
@@ -24,7 +24,7 @@ module.exports = {
       str_nom_representant_legal: {
         type: Sequelize.STRING
       },
-      str_fonction_represenatant: {
+      str_fonction_representant: {
         type: Sequelize.STRING
       },
       str_telephone: {
