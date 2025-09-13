@@ -51,7 +51,7 @@ router.post("/register", upload.array("files", 20), async function (req, res, ne
       sres_a_compte_bancaire,
       // Related data
       provinces = [], // Array of province IDs
-      localites = [], // Array of { pro_id, designation } objects
+      localites = [], // Array of { pro_id, localite: [items] } objects
       domaines = []   // Array of domain IDs
     } = structureData;
 
@@ -101,22 +101,26 @@ router.post("/register", upload.array("files", 20), async function (req, res, ne
     );
 
     // Create localite_operationnelle entries
-     await Promise.all(
-      localites.map(async (localite) => {
+    await Promise.all(
+      localites.map(provinceItem => {
         // Find the corresponding province_structure
         const provinceStructure = provinceStructures.find(
-          ps => ps.pro_id === localite.pro_id
+          ps => ps.pro_id === provinceItem.pro_id
         );
         
-        if (provinceStructure) {
-          return Localite_operationnelle.create({
-            pstr_id: provinceStructure.pstr_id,
-            loc_designation: localite.designation
-          }, { transaction });
+        if (provinceStructure && Array.isArray(provinceItem.localite)) {
+          return Promise.all(
+            provinceItem.localite.map(localite => 
+              Localite_operationnelle.create({
+                pstr_id: provinceStructure.pstr_id,
+                loc_designation: localite
+              }, { transaction })
+            )
+          );
         }
         return null;
       }).filter(Boolean)
-    );
+    ).then(results => results.flat());
 
     // Create domaine_structure relationships
     await Promise.all(
