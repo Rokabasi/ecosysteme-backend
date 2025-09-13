@@ -45,6 +45,21 @@ module.exports = {
       str_resultat_operationel: {
         type: Sequelize.TEXT
       },
+      str_niveau_risque: {
+        type: Sequelize.STRING
+      },
+       str_statut: {
+        type: Sequelize.STRING
+      },
+      str_statut_verification: {
+        type: Sequelize.STRING
+      },
+      str_is_reset: {
+        type: Sequelize.BOOLEAN
+      },
+      str_is_affected: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

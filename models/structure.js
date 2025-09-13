@@ -20,6 +20,18 @@ module.exports = (sequelize, DataTypes) => {
       Structure.hasMany(models.Document,{
         foreignKey: 'str_id'
       })
+      Structure.hasMany(models.Affectation,{
+        foreignKey: 'str_id'
+      })
+      Structure.hasMany(models.Affectation,{
+        foreignKey: 'str_id'
+      })
+      Structure.hasMany(models.Traitement,{
+        foreignKey: 'str_id'
+      })
+      Structure.hasMany(models.Partenaire,{
+        foreignKey: 'str_id'
+      })
     }
   }
   Structure.init({
@@ -39,7 +51,12 @@ module.exports = (sequelize, DataTypes) => {
     str_site_web: DataTypes.STRING,
     str_mission: DataTypes.TEXT,
     str_nombre_employe_actif: DataTypes.INTEGER,
-    str_resultat_operationel: DataTypes.TEXT
+    str_resultat_operationel: DataTypes.TEXT,
+    str_niveau_risque: DataTypes.STRING,
+    str_statut: DataTypes.STRING,
+    str_statut_verification: DataTypes.STRING,
+    str_is_reset: DataTypes.BOOLEAN,
+    str_is_affected: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Structure',
