@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Documents extends Model {
+  class Document extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,12 +11,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Documents.belongsTo(models.Structure,{
+      Document.belongsTo(models.Structure,{
         foreignKey: 'str_id'
       })
     }
   }
-  Documents.init({
+  Document.init({
     doc_id:{
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     doc_designation: DataTypes.STRING
   }, {
     sequelize,
-    modelName: 'Documents',
+    modelName: 'Document',
     timestamps:false,
   });
-  return Documents;
+  return Document;
 };

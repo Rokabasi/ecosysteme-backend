@@ -17,9 +17,9 @@ module.exports = (sequelize, DataTypes) => {
       Structure.hasMany(models.Domaine_structure,{
         foreignKey: 'str_id'
       })
-      Structure.hasMany(models.Document,{
-        foreignKey: 'str_id'
-      })
+      // Structure.hasMany(models.Document,{
+      //   foreignKey: 'str_id'
+      // })
       Structure.hasMany(models.Affectation,{
         foreignKey: 'str_id'
       })

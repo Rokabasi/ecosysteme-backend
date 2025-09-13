@@ -24,6 +24,9 @@ router.get("/", async function (req, res, next) {
 // POST register a new structure
 router.post("/register", upload.array("files", 20), async function (req, res, next) {
   const transaction = await Structure.sequelize.transaction();
+
+  const structureData = JSON.parse(req.body.structure);
+
   
   try {
     const {
@@ -47,15 +50,11 @@ router.post("/register", upload.array("files", 20), async function (req, res, ne
       sres_infos_victime_sexuel,
       sres_pret_a_collaborer,
       sres_a_compte_bancaire,
-
-      doc_designation,
-
-      
       // Related data
       provinces = [], // Array of province IDs
       localites = [], // Array of { pro_id, designation } objects
       domaines = []   // Array of domain IDs
-    } = req.body;
+    } = structureData;
 
     // Check for duplicate structure
     const existingStructure = await Structure.findOne({
@@ -142,40 +141,36 @@ router.post("/register", upload.array("files", 20), async function (req, res, ne
       sres_a_compte_bancaire
     }, { transaction });
 
-    // Define document types and their corresponding field names from the form
-    const documentTypes = [
-      { field: 'doc_arrete_creation', designation: 'Arrêté de création' },
-      { field: 'doc_arrete_approbation', designation: 'Arrêté portant approbation des statuts' },
-      { field: 'doc_statut', designation: 'Statuts' },
-      { field: 'doc_reglement_interieur', designation: 'Règlement intérieur' },
-      { field: 'doc_preuve_agrement', designation: 'Preuve d\'agrément' },
-      { field: 'doc_rapport_annuel', designation: 'Rapport d\'activités de l\'année précédente' },
-      { field: 'doc_plan_action', designation: 'Plan d\'action de l\'année en cours' },
-      { field: 'doc_rapport_financier', designation: 'Rapport financier de l\'année précédente' },
-      { field: 'doc_budget', designation: 'Budget de l\'année en cours' },
-      { field: 'doc_rapport_audit', designation: 'Rapport d\'audit des comptes annuels' },
-      { field: 'doc_rapport_commissaire', designation: 'Rapport du commissaire aux comptes' },
-      { field: 'doc_rapport_orientation', designation: 'Rapport d\'orientation' },
-      { field: 'doc_rapport_morale', designation: 'Rapport moral' }
-    ];
+    // Map frontend field names to document designations
+    const documentFieldMap = {
+      'statutNotarie': "Statuts notariés de l’ASBL/ONG",
+      'regledordreinterieur': 'Règlement d\'ordre intérieurs',
+      'personnalitejuridique': 'Personnalité juridique',
+      'organigramme': 'Organigramme',
+      'rapport1': 'Rapport d\'activités 1',
+      'rapport2': 'Rapport d\'activités 2',
+      'rapport3': 'Rapport d\'activités 3',
+      'etatfin1': 'États financiers 1',
+      'etatfin2': 'États financiers 2',
+      'etatfin3': 'États financiers 3',
+      'dernierpv': 'Dernier procès-verbal d\'assemblée générale/Conseil d\'Administration'
+    };
 
     let documents = [];
 
     if (req.files && req.files.length > 0) {
       // Process each uploaded file
       for (const file of req.files) {
-        // Find the document type based on the fieldname
-        const docType = documentTypes.find(type => file.fieldname.includes(type.field));
+        const fieldName = file.fieldname;
+        const docDesignation = documentFieldMap[fieldName] || fieldName; // Use field name as fallback
         
-        if (docType) {
-          documents.push({
-            doc_name: file.filename,
-            doc_path: file.path,
-            doc_size: file.size,
-            doc_designation: docType.designation,
-            str_id: structure.str_id,
-          });
-        }
+        documents.push({
+          doc_name: file.filename,
+          doc_path: file.path,
+          doc_size: file.size,
+          doc_designation: docDesignation,
+          str_id: structure.str_id,
+        });
       }
 
       if (documents.length > 0) {
