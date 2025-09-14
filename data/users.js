@@ -11,7 +11,7 @@ const users = [
     profil: 'admin',
     signature: '/signatures/admin.png'
   },
-  {
+  { 
     id: 2,
     nom: 'Dupont',
     prenom: 'Jean',
