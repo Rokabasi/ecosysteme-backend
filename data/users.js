@@ -5,7 +5,7 @@ const users = [
     nom: 'Admin',
     prenom: 'System',
     email: 'admin@ecosysteme.cd',
-    password: 'admin123', // In production, this should be hashed
+    password: '123', // In production, this should be hashed
     direction: 'Administration',
     fonction: 'Administrateur',
     profil: 'admin',
@@ -16,10 +16,10 @@ const users = [
     nom: 'Dupont',
     prenom: 'Jean',
     email: 'judiciaire@ecosysteme.cd',
-    password: 'judiciaire123',
-    direction: 'Judiciaire',
+    password: '123',
+    direction: 'JURIDIQUE',
     fonction: 'Juriste',
-    profil: 'direction',
+    profil: 'Juriste',
     signature: '/signatures/judiciaire.png'
   },
   {
@@ -27,10 +27,10 @@ const users = [
     nom: 'Martin',
     prenom: 'Sophie',
     email: 'etudes@ecosysteme.cd',
-    password: 'etudes123',
-    direction: 'Études',
+    password: '123',
+    direction: 'ETUDES',
     fonction: 'Chef de service',
-    profil: 'direction',
+    profil: 'Analyste',
     signature: '/signatures/etudes.png'
   },
   {
@@ -38,10 +38,10 @@ const users = [
     nom: 'Dubois',
     prenom: 'Pierre',
     email: 'reparations@ecosysteme.cd',
-    password: 'reparations123',
-    direction: 'Réparations',
+    password: '123',
+    direction: 'REPARATIONS',
     fonction: 'Responsable',
-    profil: 'direction',
+    profil: 'Analyste',
     signature: '/signatures/reparations.png'
   },
   {
@@ -49,10 +49,10 @@ const users = [
     nom: 'Leroy',
     prenom: 'Marie',
     email: 'acces@ecosysteme.cd',
-    password: 'acces123',
-    direction: 'Accès à la justice',
+    password: '123',
+    direction: 'ACCES A LA JUSTICE',
     fonction: 'Conseillère',
-    profil: 'direction',
+    profil: 'Analyste',
     signature: '/signatures/acces.png'
   },
   {
@@ -60,10 +60,10 @@ const users = [
     nom: 'Petit',
     prenom: 'Thomas',
     email: 'numerique@ecosysteme.cd',
-    password: 'numerique123',
-    direction: 'Numérique',
+    password: '123',
+    direction: 'NUMERIQUE',
     fonction: 'Développeur',
-    profil: 'direction',
+    profil: 'Admin',
     signature: '/signatures/numerique.png'
   },
   {
@@ -71,10 +71,10 @@ const users = [
     nom: 'Durand',
     prenom: 'Nathalie',
     email: 'audit@ecosysteme.cd',
-    password: 'audit123',
-    direction: 'Audit',
+    password: '123',
+    direction: 'AUDIT',
     fonction: 'Auditrice',
-    profil: 'audit',
+    profil: 'Auditeur',
     signature: '/signatures/audit.png'
   },
   {
@@ -82,10 +82,10 @@ const users = [
     nom: 'Moreau',
     prenom: 'David',
     email: 'finance@ecosysteme.cd',
-    password: 'finance123',
-    direction: 'Finance',
+    password: '123',
+    direction: 'FINANCE',
     fonction: 'Comptable',
-    profil: 'finance',
+    profil: 'financier',
     signature: '/signatures/finance.png'
   }
 ];
