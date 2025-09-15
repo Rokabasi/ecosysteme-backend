@@ -18,6 +18,9 @@ module.exports = {
       str_annee_creation: {
         type: Sequelize.STRING
       },
+      str_province_siege_sociale:{
+        type: Sequelize.STRING
+      },
       str_adresse_siege_sociale: {
         type: Sequelize.TEXT
       },

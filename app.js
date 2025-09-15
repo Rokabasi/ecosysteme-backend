@@ -6,14 +6,15 @@ const logger = require('morgan');
 const cors = require("cors");
 require('dotenv').config();
 require("./config/db").sync();
+const app = express();
 
 const indexRouter = require('./routes/index');
 const authRouter = require('./routes/auth');
 const structureRouter = require('./routes/structure');
 const provinceRouter = require('./routes/province');
 const domaineRouter = require('./routes/domaine');
-
-const app = express();
+const registerRouter = require('./routes/register');
+const candidatureRouter = require('./routes/candidature');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,11 +61,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Public routes
+app.use('/', indexRouter);  
 app.use('/auth', authRouter);
 app.use('/provinces', provinceRouter);
 app.use('/domaines', domaineRouter);
 app.use('/structures', structureRouter);
-app.use('/', indexRouter);  
+app.use('/register', registerRouter);
+app.use('/candidatures', candidatureRouter);
 
 
 // Serve static files from the React app

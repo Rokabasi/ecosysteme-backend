@@ -17,10 +17,10 @@ module.exports = (sequelize, DataTypes) => {
       Structure.hasMany(models.Domaine_structure,{
         foreignKey: 'str_id'
       })
-      // Structure.hasMany(models.Document,{
-      //   foreignKey: 'str_id'
-      // })
-      Structure.hasMany(models.Affectation,{
+      Structure.hasMany(models.Structure_renseignement,{
+        foreignKey: 'str_id'
+      })
+      Structure.hasMany(models.Document,{
         foreignKey: 'str_id'
       })
       Structure.hasMany(models.Affectation,{
@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     str_sigle: DataTypes.STRING,
     str_annee_creation: DataTypes.STRING,
     str_adresse_siege_sociale: DataTypes.TEXT,
+    str_province_siege_sociale: DataTypes.TEXT,
     str_nom_representant_legal: DataTypes.STRING,
     str_fonction_representant: DataTypes.STRING,
     str_telephone: DataTypes.STRING,
