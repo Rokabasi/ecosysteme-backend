@@ -73,6 +73,9 @@ router.get('/:str_id',auth,async function(req,res,next){
          },
          { model : Document },
          { model : Structure_renseignement },
+         { model : Affectation },
+         { model : Traitement,
+          order: [["createdAt", "DESC"]]},
       ],
     });
     if (!structure) {
@@ -107,7 +110,7 @@ router.post("/affectation", auth ,async function (req, res, next) {
       tr_usr_direction: user.direction,
       tr_usr_profil: user.profil,
       tr_usr_signature: user.signature,
-      tr_action: `affectation du dossier de candidature à la direction +  ${direction}`
+      tr_action: `affectation du dossier de candidature à la direction ${direction}`
     });
 
     return res
