@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     tr_usr_profil: DataTypes.STRING,
     tr_usr_signature: DataTypes.TEXT,
     tr_statut: DataTypes.STRING,
-    tr_commentaire: DataTypes.TEXT
+    tr_commentaire: DataTypes.TEXT,
+    tr_action: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Traitement',

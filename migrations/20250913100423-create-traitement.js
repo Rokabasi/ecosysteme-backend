@@ -36,6 +36,9 @@ module.exports = {
       tr_commentaire: {
         type: Sequelize.TEXT
       },
+      tr_action: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

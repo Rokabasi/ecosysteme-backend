@@ -15,6 +15,7 @@ const provinceRouter = require('./routes/province');
 const domaineRouter = require('./routes/domaine');
 const registerRouter = require('./routes/register');
 const candidatureRouter = require('./routes/candidature');
+const directionRouter = require('./routes/direction');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -68,7 +69,7 @@ app.use('/domaines', domaineRouter);
 app.use('/structures', structureRouter);
 app.use('/register', registerRouter);
 app.use('/candidatures', candidatureRouter);
-
+app.use('/directions', directionRouter);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
