@@ -14,27 +14,10 @@ const {
 } = require("../models");
 const auth = require("../middleware/auth");
 
-// recuperation de toutes les structures avec statut soumis par le controleur
+// recuperation de tous les dossiers affectés à sa direction
 router.get("/", auth, async function (req, res, next) {
   try {
-    const { Op } = require('sequelize');
-    const { Affectation } = require('../models');
-
-    // Récupérer les IDs des structures déjà affectées
-    const structuresAffectees = await Affectation.findAll({
-      attributes: ['str_id'],
-      raw: true
-    });
-
-    const idsStructuresAffectees = structuresAffectees.map(aff => aff.str_id);
-
-    const structuresNonAffectees = await Structure.findAll({
-      where: { 
-        str_statut: "soumis",
-        str_id: {
-          [Op.notIn]: idsStructuresAffectees
-        }
-      },
+    const dossiers = await Structure.findAll({
       attributes: [
         "str_id",
         "str_designation",
@@ -44,16 +27,24 @@ router.get("/", auth, async function (req, res, next) {
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
         "createdAt",
+      ],
+      include:[
+        {   model: Affectation, 
+            where: { aff_direction: req.query.direction },
+            required: true,
+         },
       ]
     });
 
-    return res.status(200).json(structuresNonAffectees);
+    return res.status(200).json(dossiers);
   } catch (error) {
+    console.log(error);
+    
     res.status(500).send(error.message);
   }
 });
 
-// recuperation d'une candidature par son id
+// recuperation d'un dossier par son id
 router.get('/:str_id',auth,async function(req,res,next){
   try {
     const { str_id } = req.params;
@@ -73,6 +64,8 @@ router.get('/:str_id',auth,async function(req,res,next){
          },
          { model : Document },
          { model : Structure_renseignement },
+         { model : Affectation },
+         { model : Traitement },
       ],
     });
     if (!structure) {
@@ -117,6 +110,8 @@ router.post("/affectation", auth ,async function (req, res, next) {
         success: true,
       });
   } catch (error) {
+    console.log(error);
+    
     res.status(500).send(error.message);
   }
 });
