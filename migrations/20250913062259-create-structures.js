@@ -9,6 +9,12 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.UUID
       },
+      str_code: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        unique: true
+      },
       str_designation: {
         type: Sequelize.STRING
       },

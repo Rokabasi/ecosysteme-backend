@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
+    str_code: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true
+    },
     str_designation: DataTypes.STRING,
     str_sigle: DataTypes.STRING,
     str_annee_creation: DataTypes.STRING,

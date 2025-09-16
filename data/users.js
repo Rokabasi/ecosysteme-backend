@@ -87,7 +87,18 @@ const users = [
     fonction: 'Comptable',
     profil: 'financier',
     signature: '/signatures/finance.png'
-  }
+  },
+  {
+    id: 9,
+    nom: 'Ndake',
+    prenom: 'Nathan',
+    email: 'contoleur@ecosysteme.cd',
+    password: '123',
+    direction: 'AUDIT',
+    fonction: 'Controleur',
+    profil: 'Controleur',
+    signature: '/signatures/audit.png'
+  },
 ];
 
 module.exports = users;

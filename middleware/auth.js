@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
   // Get token from header
-  const token = req.header('Authorization')?.split(' ')[1];
+   const token = req.body.token || req.query.token || req.headers["x-access-token"];
   
   // Check if no token
   if (!token) {
