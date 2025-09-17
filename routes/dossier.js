@@ -52,6 +52,38 @@ router.get("/", auth, async function (req, res, next) {
   }
 });
 
+router.get("/controleurs", auth, async function (req, res, next) {
+  const transaction = await sequelize.transaction();
+  try {
+    const dossiers = await Structure.findAll({
+      attributes: [
+        "str_id",
+        "str_designation",
+        "str_statut",
+        "str_sigle",
+        "str_annee_creation",
+        "str_adresse_siege_sociale",
+        "str_province_siege_sociale",
+        "createdAt",
+      ],
+      include:[
+        {   model: Affectation,
+            required: true,
+         },
+      ],
+      transaction
+    });
+
+    await transaction.commit();
+    return res.status(200).json(dossiers);
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error);
+    
+    res.status(500).send(error.message);
+  }
+});
+
 router.get("/audit", auth, async function (req, res, next) {
   const transaction = await sequelize.transaction();
   try {
