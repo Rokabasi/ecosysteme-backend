@@ -16,8 +16,6 @@ router.post(
   "/",
   upload.any(),
   async function (req, res, next) {
-    const transaction = await Structure.sequelize.transaction();
-
     const structureData = JSON.parse(req.body.structure);
     
     try {
@@ -55,12 +53,10 @@ router.post(
           str_designation,
           str_annee_creation,
           str_province_siege_sociale
-        },
-        transaction,
+        }
       });
 
       if (existingStructure) {
-        await transaction.rollback();
         return res.status(409).json({
           message:
             "Une structure ayant les meme données d'identification existe déjà dans le système",
@@ -68,37 +64,31 @@ router.post(
       }
 
       // Create the structure
-      const structure = await Structure.create(
-        {
-          str_designation,
-          str_sigle: str_sigle || null,
-          str_annee_creation,
-          str_adresse_siege_sociale,
-          str_nom_representant_legal,
-          str_fonction_representant,
-          str_telephone,
-          str_email,
-          str_site_web,
-          str_mission,
-          str_nombre_employe_actif,
-          str_resultat_operationel,
-          str_province_siege_sociale,
-          str_statut: "soumis",
-          str_statut_verification: "en cours de traitement",
-        },
-        { transaction }
-      );
+      const structure = await Structure.create({
+        str_designation,
+        str_sigle: str_sigle || null,
+        str_annee_creation,
+        str_adresse_siege_sociale,
+        str_nom_representant_legal,
+        str_fonction_representant,
+        str_telephone,
+        str_email,
+        str_site_web,
+        str_mission,
+        str_nombre_employe_actif,
+        str_resultat_operationel,
+        str_province_siege_sociale,
+        str_statut: "soumis",
+        str_statut_verification: "en cours de traitement",
+      });
 
       // Create province_structure relationships
       const provinceStructures = await Promise.all(
         provinces.map((pro_id) =>
-          Province_structure.create(
-            {
-              pro_id,
-              str_id: structure.str_id,
-            },
-            { transaction }
-          )
+          Province_structure.create({
+            pro_id,
+            str_id: structure.str_id,
+          })
         )
       );
 
@@ -114,13 +104,10 @@ router.post(
             if (provinceStructure && Array.isArray(provinceItem.localite)) {
               return Promise.all(
                 provinceItem.localite.map((localite) =>
-                  Localite_operationnelle.create(
-                    {
-                      pstr_id: provinceStructure.pstr_id,
-                      loc_designation: localite,
-                    },
-                    { transaction }
-                  )
+                  Localite_operationnelle.create({
+                    pstr_id: provinceStructure.pstr_id,
+                    loc_designation: localite,
+                  })
                 )
               );
             }
@@ -132,34 +119,28 @@ router.post(
       // Create domaine_structure relationships
       await Promise.all(
         domaines.map((dom_id) =>
-          Domaine_structure.create(
-            {
-              dom_id,
-              str_id: structure.str_id,
-            },
-            { transaction }
-          )
+          Domaine_structure.create({
+            dom_id,
+            str_id: structure.str_id,
+          })
         )
       );
 
       // Create Structure_renseignement with default values
-      await Structure_renseignement.create(
-        {
-          str_id: structure.str_id,
-          sres_prise_en_charge,
-          sres_prise_en_charge_description,
-          sres_is_association_victime,
-          sres_is_association_victime_description,
-          sres_infos_victime_sexuel,
-          sres_pret_a_collaborer,
-          sres_a_compte_bancaire,
-        },
-        { transaction }
-      );
+      await Structure_renseignement.create({
+        str_id: structure.str_id,
+        sres_prise_en_charge,
+        sres_prise_en_charge_description,
+        sres_is_association_victime,
+        sres_is_association_victime_description,
+        sres_infos_victime_sexuel,
+        sres_pret_a_collaborer,
+        sres_a_compte_bancaire,
+      });
 
       // Map frontend field names to document designations
       const documentFieldMap = {
-        statutNotarie: "Statuts notariés de l’ASBL/ONG",
+        statutNotarie: "Statuts notariés de l'ASBL/ONG",
         regledordreinterieur: "Règlement d'ordre intérieurs",
         personnalitejuridique: "Personnalité juridique",
         organigramme: "Organigramme",
@@ -192,7 +173,6 @@ router.post(
 
         if (documents.length > 0) {
           await Document.bulkCreate(documents, {
-            transaction,
             returning: true,
           });
         }
@@ -203,17 +183,13 @@ router.post(
         include: [
           { model: Province_structure, include: [Localite_operationnelle] },
           { model: Domaine_structure },
-        ],
-        transaction,
+        ]
       });
-
-      await transaction.commit();
 
       return res.status(201).json(result);
     } catch (error) {
       console.log(error);
       
-      await transaction.rollback();
       console.error("Error creating structure:", error);
       return res.status(500).json({
         message: "Une erreur est survenue lors de la création de la structure",

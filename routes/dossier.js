@@ -20,7 +20,6 @@ const { Op } = require("sequelize");
 
 // recuperation de tous les dossiers affectés à sa direction
 router.get("/", auth, async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const dossiers = await Structure.findAll({
       attributes: [
@@ -38,14 +37,11 @@ router.get("/", auth, async function (req, res, next) {
             where: { aff_direction: req.query.direction },
             required: true,
          },
-      ],
-      transaction
+      ]
     });
 
-    await transaction.commit();
     return res.status(200).json(dossiers);
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -53,7 +49,6 @@ router.get("/", auth, async function (req, res, next) {
 });
 
 router.get("/controleurs", auth, async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const dossiers = await Structure.findAll({
       attributes: [
@@ -70,14 +65,11 @@ router.get("/controleurs", auth, async function (req, res, next) {
         {   model: Affectation,
             required: true,
          },
-      ],
-      transaction
+      ]
     });
 
-    await transaction.commit();
     return res.status(200).json(dossiers);
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -85,7 +77,6 @@ router.get("/controleurs", auth, async function (req, res, next) {
 });
 
 router.get("/audit", auth, async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const dossiers = await Structure.findAll({
       where: { 
@@ -102,14 +93,11 @@ router.get("/audit", auth, async function (req, res, next) {
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
         "createdAt",
-      ],
-      transaction
+      ]
     });
 
-    await transaction.commit();
     return res.status(200).json(dossiers);
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -117,7 +105,6 @@ router.get("/audit", auth, async function (req, res, next) {
 });
 
 router.get("/juridique", auth, async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const dossiers = await Structure.findAll({
       where: { 
@@ -132,14 +119,11 @@ router.get("/juridique", auth, async function (req, res, next) {
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
         "createdAt",
-      ],
-      transaction
+      ]
     });
 
-    await transaction.commit();
     return res.status(200).json(dossiers);
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -147,7 +131,6 @@ router.get("/juridique", auth, async function (req, res, next) {
 });
 
 router.get("/finance", auth, async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const dossiers = await Structure.findAll({
       where: { 
@@ -162,14 +145,11 @@ router.get("/finance", auth, async function (req, res, next) {
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
         "createdAt",
-      ],
-      transaction
+      ]
     });
 
-    await transaction.commit();
     return res.status(200).json(dossiers);
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -178,7 +158,6 @@ router.get("/finance", auth, async function (req, res, next) {
 
 // recuperation d'un dossier par son id
 router.get('/:str_id',auth,async function(req,res,next){
-  const transaction = await sequelize.transaction();
   try {
     const { str_id } = req.params;
     const structure = await Structure.findOne({
@@ -201,30 +180,24 @@ router.get('/:str_id',auth,async function(req,res,next){
          { model : Traitement,
           order: [["createdAt", "ASC"]]},
         { model : Projet }
-      ],
-      transaction
+      ]
     });
     if (!structure) {
-      await transaction.rollback();
       return res.status(404).json({ message: "Structure not found" });
     }
-    await transaction.commit();
     return res.status(200).json(structure);
   } catch (error) {
-    await transaction.rollback();
    res.status(500).send(error.message); 
   }
 })
 
 //validation de la structure
 router.patch("/validation", auth ,async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const { str_id, commentaire, user } = req.body;
     
-    const structure = await Structure.findByPk(str_id, { transaction });
+    const structure = await Structure.findByPk(str_id);
     if (!structure) {
-      await transaction.rollback();
       return res.status(404).json({ message: "Structure not found" });
     }
 
@@ -232,7 +205,7 @@ router.patch("/validation", auth ,async function (req, res, next) {
       {
         str_statut: "admis à la due diligence",
       },
-      { where: { str_id }, transaction }
+      { where: { str_id } }
     );
 
     await Traitement.create({
@@ -246,9 +219,8 @@ router.patch("/validation", auth ,async function (req, res, next) {
       tr_commentaire: commentaire,
       tr_statut: "validé",
       tr_action: `Validation du dossier de candidature `
-    }, { transaction });
+    });
 
-    await transaction.commit();
     return res
       .status(200)
       .json({
@@ -256,7 +228,6 @@ router.patch("/validation", auth ,async function (req, res, next) {
         success: true,
       });
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -265,13 +236,11 @@ router.patch("/validation", auth ,async function (req, res, next) {
 
 //rejet de la structure
 router.patch("/rejet", auth ,async function (req, res, next) {
-  const transaction = await sequelize.transaction();
   try {
     const { str_id, commentaire, user } = req.body;
     
-    const structure = await Structure.findByPk(str_id, { transaction });
+    const structure = await Structure.findByPk(str_id);
     if (!structure) {
-      await transaction.rollback();
       return res.status(404).json({ message: "Structure not found" });
     }
 
@@ -280,7 +249,7 @@ router.patch("/rejet", auth ,async function (req, res, next) {
         str_statut: "rejeté",
         str_statut_verification: "rejeté",
       },
-      { where: { str_id }, transaction }
+      { where: { str_id } }
     );
 
     await Traitement.create({
@@ -294,9 +263,8 @@ router.patch("/rejet", auth ,async function (req, res, next) {
       tr_commentaire: commentaire,
       tr_statut: "rejeté",
       tr_action: `Rejet du dossier de candidature `
-    }, { transaction });
+    });
 
-    await transaction.commit();
     return res
       .status(200)
       .json({
@@ -304,7 +272,6 @@ router.patch("/rejet", auth ,async function (req, res, next) {
         success: true,
       });
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);
@@ -317,12 +284,10 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
   let { str_id, risque, user, commentaire } = req.body;
   user = JSON.parse(user)
 
-  const transaction = await sequelize.transaction();
   try {
     
-    const structure = await Structure.findByPk(str_id, { transaction });
+    const structure = await Structure.findByPk(str_id);
     if (!structure) {
-      await transaction.rollback();
       return res.status(404).json({ message: "Structure not found" });
     }
 
@@ -330,7 +295,7 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
       {
         str_niveau_risque: risque,
       },
-      { where: { str_id }, transaction }
+      { where: { str_id } }
     );
 
     await Traitement.create({
@@ -343,7 +308,7 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
       tr_usr_signature: user.signature,
       tr_commentaire: commentaire,
       tr_action: `Ajout du niveau de risque après due diligence `
-    }, { transaction });
+    });
 
     if(risque == 'Élevé' || risque == 'Très élevé'){
       await Structure.update(
@@ -351,7 +316,7 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
         str_statut: 'rejeté après due diligence',
         str_statut_verification: 'rejeté',
       },
-      { where: { str_id }, transaction }
+      { where: { str_id } }
     );
     }else{
       await Structure.update(
@@ -359,7 +324,7 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
         str_statut: "accepté dans l'écosystème",
         str_statut_verification: "accepté",
       },
-      { where: { str_id }, transaction }
+      { where: { str_id } }
     )
     }
 
@@ -379,13 +344,11 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
 
         if (documents.length > 0) {
           await Document.bulkCreate(documents, {
-            transaction,
             returning: true,
           });
         }
       }
 
-    await transaction.commit();
     return res
       .status(200)
       .json({
@@ -393,7 +356,6 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
         success: true,
       });
   } catch (error) {
-    await transaction.rollback();
     console.log(error);
     
     res.status(500).send(error.message);

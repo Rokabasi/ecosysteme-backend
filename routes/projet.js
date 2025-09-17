@@ -12,7 +12,6 @@ const auth = require("../middleware/auth");
 
 //assignation du projet à la structure
 router.post("/", upload.any(), auth, async function (req, res, next) {
-  let transaction;
   console.log(req.body);
   
   try {
@@ -30,16 +29,12 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
       pro_resultat,
     } = projetData;
     
-    // Début de la transaction
-    transaction = await sequelize.transaction();
-
-    const structure = await Structure.findByPk(str_id, { transaction });
+    const structure = await Structure.findByPk(str_id);
     if (!structure) {
-      await transaction.rollback();
       return res.status(404).json({ message: "Structure not found" });
     }
 
-    // Création du projet avec transaction
+    // Création du projet
     const nouveauProjet = await Projet.create({
       pro_code,
       pro_intitule,
@@ -50,9 +45,9 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
       pro_resultat,
       pro_statut:'En cours',
       str_id
-    }, { transaction });
+    });
 
-    // Création du traitement avec transaction
+    // Création du traitement
     await Traitement.create({
       str_id,
       tr_usr_id: user.id,
@@ -62,12 +57,12 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
       tr_usr_profil: user.profil,
       tr_usr_signature: user.signature,
       tr_action: `Création du projet ${pro_intitule} (${pro_code})`
-    }, { transaction });
+    });
 
     let documents = [];
 
     if (req.files && req.files.length > 0) {
-      // Process each uploaded file with transaction
+      // Process each uploaded file
       for (const file of req.files) {
         documents.push({
           doc_name: file.filename,
@@ -81,14 +76,10 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
 
       if (documents.length > 0) {
         await Document.bulkCreate(documents, {
-          transaction,
           returning: true,
         });
       }
     }
-
-    // Validation de la transaction
-    await transaction.commit();
 
     return res.status(201).json({
       message: "Le projet a été créé avec succès",
@@ -98,10 +89,6 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
   } catch (error) {
     console.log(error);
     
-    // Rollback en cas d'erreur
-    if (transaction) {
-      await transaction.rollback();
-    }
     res.status(500).json({
       message: "Erreur interne du serveur",
       error: error.message
