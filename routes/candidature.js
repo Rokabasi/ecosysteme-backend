@@ -102,6 +102,13 @@ router.post("/affectation", auth ,async function (req, res, next) {
       aff_direction: direction,
     });
 
+    await Structure.update(
+      {
+        str_statut_verification: "en cours de traitement",
+      },
+      { where: { str_id } }
+    );
+
     await Traitement.create({
       str_id,
       tr_usr_id: user.id,

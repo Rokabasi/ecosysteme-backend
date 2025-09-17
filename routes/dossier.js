@@ -246,6 +246,7 @@ router.patch("/rejet", auth ,async function (req, res, next) {
     await Structure.update(
       {
         str_statut: "rejeté",
+        str_statut_verification: "rejeté",
       },
       { where: { str_id }, transaction }
     );
@@ -316,6 +317,7 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
       await Structure.update(
       {
         str_statut: 'rejeté après due diligence',
+        str_statut_verification: 'rejeté',
       },
       { where: { str_id }, transaction }
     );
@@ -323,6 +325,7 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
       await Structure.update(
       {
         str_statut: "accepté dans l'écosystème",
+        str_statut_verification: "accepté",
       },
       { where: { str_id }, transaction }
     )

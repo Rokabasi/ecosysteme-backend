@@ -84,7 +84,7 @@ router.post(
           str_resultat_operationel,
           str_province_siege_sociale,
           str_statut: "soumis",
-          str_statut_verification: "soumis",
+          str_statut_verification: "en cours de traitement",
         },
         { transaction }
       );
