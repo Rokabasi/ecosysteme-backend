@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
       Structure.hasMany(models.Partenaire,{
         foreignKey: 'str_id'
       })
+      Structure.hasMany(models.Projet,{
+        foreignKey: 'str_id'
+      })
     }
   }
   Structure.init({

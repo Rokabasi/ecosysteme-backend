@@ -24,6 +24,15 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.addConstraint('Partenaires', {
+      fields:['str_id'],
+      type:'foreign key',
+      name:'str_id_in_Partenaires',
+      references:{
+        table:"Structures",
+        field:'str_id'
+      }
+    })
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Partenaires');

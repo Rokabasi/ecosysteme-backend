@@ -113,6 +113,36 @@ router.get("/juridique", auth, async function (req, res, next) {
   }
 });
 
+router.get("/finance", auth, async function (req, res, next) {
+  const transaction = await sequelize.transaction();
+  try {
+    const dossiers = await Structure.findAll({
+      where: { 
+        str_statut:  "accepté dans l'écosystème" // Ne pas égal à "soumis"
+      },
+      attributes: [
+        "str_id",
+        "str_designation",
+        "str_statut",
+        "str_sigle",
+        "str_annee_creation",
+        "str_adresse_siege_sociale",
+        "str_province_siege_sociale",
+        "createdAt",
+      ],
+      transaction
+    });
+
+    await transaction.commit();
+    return res.status(200).json(dossiers);
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error);
+    
+    res.status(500).send(error.message);
+  }
+});
+
 // recuperation d'un dossier par son id
 router.get('/:str_id',auth,async function(req,res,next){
   const transaction = await sequelize.transaction();

@@ -85,7 +85,7 @@ const users = [
     password: '123',
     direction: 'FINANCE',
     fonction: 'Comptable',
-    profil: 'financier',
+    profil: 'Financier',
     signature: '/signatures/finance.png'
   },
   {

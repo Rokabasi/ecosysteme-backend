@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Document extends Model {
+  class Projet extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,31 +11,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Document.belongsTo(models.Structure,{
+      Projet.belongsTo(models.Structure,{
         foreignKey: 'str_id'
       })
-      Document.belongsTo(models.Projet,{
+      Projet.hasMany(models.Document,{
         foreignKey: 'pro_id'
       })
 
     }
   }
-  Document.init({
-    doc_id:{
+  Projet.init({
+    pro_id:{
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    str_id: DataTypes.UUID,
-    doc_path: DataTypes.TEXT,
-    doc_name: DataTypes.STRING,
-    doc_size:DataTypes.STRING,
-    doc_designation: DataTypes.STRING,
-    pro_id: DataTypes.UUID
+    pro_code: DataTypes.STRING,
+    pro_intitule: DataTypes.STRING,
+    pro_zone: DataTypes.STRING,
+    pro_date_debut: DataTypes.DATEONLY,
+    pro_date_fin: DataTypes.DATEONLY,
+    pro_cout: DataTypes.STRING,
+    pro_resultat: DataTypes.TEXT,
+    pro_statut: DataTypes.STRING,
+    str_id: DataTypes.UUID
   }, {
     sequelize,
-    modelName: 'Document',
-    timestamps:false,
+    modelName: 'Projet',
   });
-  return Document;
+  return Projet;
 };
