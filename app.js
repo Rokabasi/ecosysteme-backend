@@ -17,6 +17,7 @@ const registerRouter = require('./routes/register');
 const candidatureRouter = require('./routes/candidature');
 const directionRouter = require('./routes/direction');
 const dossierRouter = require('./routes/dossier');
+const projetRouter = require('./routes/projet');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -72,6 +73,7 @@ app.use('/register', registerRouter);
 app.use('/candidatures', candidatureRouter);
 app.use('/directions', directionRouter);
 app.use('/dossiers', dossierRouter);
+app.use('/projets', projetRouter);
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));

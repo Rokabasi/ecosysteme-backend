@@ -10,7 +10,8 @@ const {
   Localite_operationnelle,
   Domaine,
   Structure_renseignement,
-  Traitement
+  Traitement,
+  Projet
 } = require("../models");
 const auth = require("../middleware/auth");
 const upload = require("../utils/multer");
@@ -167,6 +168,7 @@ router.get('/:str_id',auth,async function(req,res,next){
          { model : Affectation },
          { model : Traitement,
           order: [["createdAt", "ASC"]]},
+        { model : Projet }
       ],
       transaction
     });

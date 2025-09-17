@@ -4,16 +4,23 @@ const {
   Structure,
   Document,
   Traitement,
-  Projet
+  Projet,
+  sequelize
 } = require("../models");
+const upload = require("../utils/multer");
 const auth = require("../middleware/auth");
 
 //assignation du projet à la structure
 router.post("/", upload.any(), auth, async function (req, res, next) {
   let transaction;
+  console.log(req.body);
   
   try {
-    let { 
+    
+      const projetData = JSON.parse(req.body.projetData);
+      const user = JSON.parse(req.body.user);
+    const str_id = req.body.str_id;
+      let { 
       pro_code,
       pro_intitule,
       pro_zone,
@@ -21,13 +28,7 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
       pro_date_fin,
       pro_cout,
       pro_resultat,
-      pro_statut,
-      str_id,
-      user,
-      commentaire // Ajout de commentaire pour le traitement
-    } = req.body;
-
-    user = JSON.parse(user);
+    } = projetData;
     
     // Début de la transaction
     transaction = await sequelize.transaction();
@@ -47,7 +48,7 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
       pro_date_fin,
       pro_cout,
       pro_resultat,
-      pro_statut,
+      pro_statut:'En cours',
       str_id
     }, { transaction });
 
@@ -60,7 +61,6 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
       tr_usr_direction: user.direction,
       tr_usr_profil: user.profil,
       tr_usr_signature: user.signature,
-      tr_commentaire: commentaire,
       tr_action: `Création du projet ${pro_intitule} (${pro_code})`
     }, { transaction });
 
@@ -96,6 +96,8 @@ router.post("/", upload.any(), auth, async function (req, res, next) {
     });
 
   } catch (error) {
+    console.log(error);
+    
     // Rollback en cas d'erreur
     if (transaction) {
       await transaction.rollback();
