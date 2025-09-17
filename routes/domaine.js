@@ -8,7 +8,7 @@ const {
 router.get("/" ,async function (req, res, next) {
   try {
     const domaines = await Domaine.findAll();
-    console.log(domaines,'==');
+    console.log(domaines,'==cc');
     
     return res.status(200).json(domaines);
   } catch (error) {
