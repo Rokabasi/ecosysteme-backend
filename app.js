@@ -23,39 +23,8 @@ const projetRouter = require('./routes/projet');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Autoriser les requêtes sans origine (comme les appels API directs)
-    if (!origin) return callback(null, true);
-
-    // Liste des domaines autorisés
-    const allowedOrigins = [
-      process.env.APP_URL,
-      // Ajoutez d'autres domaines si nécessaire
-    ];
-
-    if (allowedOrigins.indexOf(origin) !== -1 || origin.endsWith("mazaya.io")) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  allowedHeaders: [
-    "Origin",
-    "X-Requested-With",
-    "Content-Type",
-    "Accept",
-    "Authorization",
-    "x-access-token",
-  ],
-  credentials: true, // Pour permettre les cookies dans les requêtes cross-origin
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-};
-
 // Appliquer CORS globalement
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(logger('dev'));
 app.use(express.json());
