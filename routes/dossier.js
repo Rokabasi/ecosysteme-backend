@@ -15,6 +15,7 @@ const {
 const auth = require("../middleware/auth");
 const upload = require("../utils/multer");
 const sequelize = require("../config/db");
+const { Op } = require("sequelize");
 
 // recuperation de tous les dossiers affectés à sa direction
 router.get("/", auth, async function (req, res, next) {
@@ -54,7 +55,41 @@ router.get("/audit", auth, async function (req, res, next) {
   const transaction = await sequelize.transaction();
   try {
     const dossiers = await Structure.findAll({
-      where: { str_statut: "validé" },
+      where: { 
+        str_statut: {
+          [Op.ne]: "soumis" // Ne pas égal à "soumis"
+        }
+      },
+      attributes: [
+        "str_id",
+        "str_designation",
+        "str_statut",
+        "str_sigle",
+        "str_annee_creation",
+        "str_adresse_siege_sociale",
+        "str_province_siege_sociale",
+        "createdAt",
+      ],
+      transaction
+    });
+
+    await transaction.commit();
+    return res.status(200).json(dossiers);
+  } catch (error) {
+    await transaction.rollback();
+    console.log(error);
+    
+    res.status(500).send(error.message);
+  }
+});
+
+router.get("/juridique", auth, async function (req, res, next) {
+  const transaction = await sequelize.transaction();
+  try {
+    const dossiers = await Structure.findAll({
+      where: { 
+        str_statut:  "accepté dans l'écosystème" // Ne pas égal à "soumis"
+      },
       attributes: [
         "str_id",
         "str_designation",
@@ -245,10 +280,10 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
       tr_action: `Ajout du niveau de risque après due diligence `
     }, { transaction });
 
-    if(risque == 'Élevé' || risque == 'Très élevé'){
+    if(risque == 'Élevé' || risque == 'Très élevé'){
       await Structure.update(
       {
-        str_statut: 'rejeté',
+        str_statut: 'rejeté après due diligence',
       },
       { where: { str_id }, transaction }
     );
