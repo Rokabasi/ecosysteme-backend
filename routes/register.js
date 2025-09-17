@@ -223,4 +223,33 @@ router.post(
   }
 );
 
+router.get('/', async (req, res) => {
+  try {
+    const structure = await Structure.findOne({
+      where: { 
+        str_designation: req.query.str_designation,
+        str_province_siege_sociale: req.query.str_province_siege_sociale,
+        str_annee_creation : req.query.str_annee_creation,
+      },
+      attibutes: [
+        "str_designation",
+        "str_statut",
+        "str_sigle",
+        "str_annee_creation",
+        "str_adresse_siege_sociale",
+        "str_province_siege_sociale",
+        "createdAt",
+        "str_staut_verification",
+      ],
+    });
+    if (!structure) {
+      return res.status(404).json({ message: 'Structure introuvable' });
+    }
+    res.json(structure);
+  } catch (error) {
+    console.error('Error fetching structure:', error);
+    res.status(500).json({ message: 'Une erreur est survenue lors de la recherche de la structure' });
+  }
+});
+
 module.exports = router;
