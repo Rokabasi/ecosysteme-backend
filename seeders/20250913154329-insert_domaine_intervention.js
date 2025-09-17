@@ -1,9 +1,9 @@
 'use strict';
-const { v4: uuidv4 } = require('uuid');
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
+    const { v4: uuidv4 } = await import('uuid');
     await queryInterface.bulkInsert('Domaines', [
       { 
         dom_id: uuidv4(), 
