@@ -233,7 +233,6 @@ router.get('/', async (req, res) => {
       },
       attibutes: [
         "str_designation",
-        "str_statut",
         "str_sigle",
         "str_annee_creation",
         "str_adresse_siege_sociale",
