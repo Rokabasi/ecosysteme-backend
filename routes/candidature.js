@@ -43,6 +43,7 @@ router.get("/", auth, async function (req, res, next) {
         "str_annee_creation",
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
+        "str_code",
         "createdAt",
       ]
     });

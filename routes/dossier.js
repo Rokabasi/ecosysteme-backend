@@ -30,6 +30,7 @@ router.get("/", auth, async function (req, res, next) {
         "str_annee_creation",
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
+        "str_code",
         "createdAt",
       ],
       include:[
@@ -37,6 +38,7 @@ router.get("/", auth, async function (req, res, next) {
             where: { aff_direction: req.query.direction },
             required: true,
          },
+         { model : Projet}
       ]
     });
 
@@ -60,18 +62,18 @@ router.get("/controleurs", auth, async function (req, res, next) {
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
         "createdAt",
+        "str_code",
       ],
       include:[
         {   model: Affectation,
             required: true,
          },
-      ]
+         { model : Projet}
+      ],
     });
 
     return res.status(200).json(dossiers);
   } catch (error) {
-    console.log(error);
-    
     res.status(500).send(error.message);
   }
 });
@@ -92,14 +94,16 @@ router.get("/audit", auth, async function (req, res, next) {
         "str_annee_creation",
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
+        "str_code",
         "createdAt",
+      ],
+      include:[
+         { model : Projet}
       ]
     });
 
     return res.status(200).json(dossiers);
   } catch (error) {
-    console.log(error);
-    
     res.status(500).send(error.message);
   }
 });
@@ -118,14 +122,16 @@ router.get("/juridique", auth, async function (req, res, next) {
         "str_annee_creation",
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
+        "str_code",
         "createdAt",
+      ],
+      include:[
+         { model : Projet}
       ]
     });
 
     return res.status(200).json(dossiers);
   } catch (error) {
-    console.log(error);
-    
     res.status(500).send(error.message);
   }
 });
@@ -144,14 +150,16 @@ router.get("/finance", auth, async function (req, res, next) {
         "str_annee_creation",
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
+        "str_code",
         "createdAt",
+      ],
+      include:[
+         { model : Projet}
       ]
     });
 
     return res.status(200).json(dossiers);
   } catch (error) {
-    console.log(error);
-    
     res.status(500).send(error.message);
   }
 });
