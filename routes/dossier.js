@@ -42,7 +42,8 @@ router.get("/", auth, async function (req, res, next) {
          { model : Structure_renseignement,
           attributes:['sres_is_association_victime']
          }
-      ]
+      ],
+       order: [["createdAt", "DESC"]]
     });
 
     return res.status(200).json(dossiers);
@@ -76,6 +77,7 @@ router.get("/controleurs", auth, async function (req, res, next) {
           attributes:['sres_is_association_victime']
          }
       ],
+      order: [["createdAt", "DESC"]]
     });
 
     return res.status(200).json(dossiers);
@@ -108,7 +110,8 @@ router.get("/audit", auth, async function (req, res, next) {
          { model : Structure_renseignement,
           attributes:['sres_is_association_victime']
          }
-      ]
+      ],
+       order: [["createdAt", "DESC"]]
     });
 
     return res.status(200).json(dossiers);
@@ -140,6 +143,7 @@ router.get("/juridique", auth, async function (req, res, next) {
           attributes:['sres_is_association_victime']
          }
       ],
+       order: [["createdAt", "DESC"]]
     });
 
     return res.status(200).json(dossiers);
@@ -170,7 +174,8 @@ router.get("/finance", auth, async function (req, res, next) {
          { model : Structure_renseignement,
           attributes:['sres_is_association_victime']
          }
-      ]
+      ],
+       order: [["createdAt", "DESC"]]
     });
 
     return res.status(200).json(dossiers);

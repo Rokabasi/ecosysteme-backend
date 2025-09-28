@@ -64,7 +64,8 @@ module.exports = (sequelize, DataTypes) => {
     str_statut: DataTypes.STRING,
     str_statut_verification: DataTypes.STRING,
     str_is_reset: DataTypes.BOOLEAN,
-    str_is_affected: DataTypes.BOOLEAN
+    str_is_affected: DataTypes.BOOLEAN,
+    str_nombre_victime: DataTypes.FLOAT,
   }, {
     sequelize,
     modelName: 'Structure',

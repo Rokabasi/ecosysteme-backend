@@ -50,7 +50,8 @@ router.get("/", auth, async function (req, res, next) {
          { model : Structure_renseignement,
           attributes:['sres_is_association_victime']
          }
-      ]
+      ],
+       order: [["createdAt", "DESC"]]
     });
 
     return res.status(200).json(structuresNonAffectees);

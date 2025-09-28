@@ -41,6 +41,7 @@ router.post(
         sres_pret_a_collaborer,
         sres_a_compte_bancaire,
         str_province_siege_sociale,
+        str_nombre_victime,
         // Related data
         provinces = [], // Array of province IDs
         localites = [], // Array of { pro_id, localite: [items] } objects
@@ -80,6 +81,7 @@ router.post(
         str_province_siege_sociale,
         str_statut: "soumis",
         str_statut_verification: "en cours de traitement",
+        str_nombre_victime
       });
 
       // Create province_structure relationships
@@ -152,6 +154,8 @@ router.post(
         etatfin3: "États financiers 3",
         dernierpv:
           "Dernier procès-verbal d'assemblée générale/Conseil d'Administration",
+        documentorganique: "Document organique",
+        listevictimesmembres: "Liste des victimes membres de l'association"
       };
 
       let documents = [];
