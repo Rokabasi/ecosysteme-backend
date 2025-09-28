@@ -9,7 +9,8 @@ const auth = require("../middleware/auth");
 router.get("/", async function (req, res, next) {
   try {
     const provinces = await Province.findAll({
-      where: { pro_statut: true }
+      where: { pro_statut: true },
+      order: [["pro_designation", "ASC"]]
     });
     return res.status(200).json(provinces);
   } catch (error) {

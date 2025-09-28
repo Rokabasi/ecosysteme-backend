@@ -38,7 +38,10 @@ router.get("/", auth, async function (req, res, next) {
             where: { aff_direction: req.query.direction },
             required: true,
          },
-         { model : Projet}
+         { model : Projet},
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
       ]
     });
 
@@ -68,7 +71,10 @@ router.get("/controleurs", auth, async function (req, res, next) {
         {   model: Affectation,
             required: true,
          },
-         { model : Projet}
+         { model : Projet},
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
       ],
     });
 
@@ -98,7 +104,10 @@ router.get("/audit", auth, async function (req, res, next) {
         "createdAt",
       ],
       include:[
-         { model : Projet}
+         { model : Projet},
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
       ]
     });
 
@@ -126,8 +135,11 @@ router.get("/juridique", auth, async function (req, res, next) {
         "createdAt",
       ],
       include:[
-         { model : Projet}
-      ]
+         { model : Projet},
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
+      ],
     });
 
     return res.status(200).json(dossiers);
@@ -154,7 +166,10 @@ router.get("/finance", auth, async function (req, res, next) {
         "createdAt",
       ],
       include:[
-         { model : Projet}
+         { model : Projet},
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
       ]
     });
 

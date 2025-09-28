@@ -129,13 +129,13 @@ router.post(
       // Create Structure_renseignement with default values
       await Structure_renseignement.create({
         str_id: structure.str_id,
-        sres_prise_en_charge,
+        sres_prise_en_charge : sres_is_association_victime ? sres_prise_en_charge ? true : null : sres_prise_en_charge,
         sres_prise_en_charge_description,
-        sres_is_association_victime,
+        sres_is_association_victime ,
         sres_is_association_victime_description,
-        sres_infos_victime_sexuel,
-        sres_pret_a_collaborer,
-        sres_a_compte_bancaire,
+        sres_infos_victime_sexuel: sres_is_association_victime ? sres_infos_victime_sexuel ? true :null : sres_infos_victime_sexuel,
+        sres_pret_a_collaborer : sres_is_association_victime ? sres_pret_a_collaborer ? true : null : sres_pret_a_collaborer,
+        sres_a_compte_bancaire : sres_is_association_victime ? sres_a_compte_bancaire ? true : null : sres_a_compte_bancaire,
       });
 
       // Map frontend field names to document designations

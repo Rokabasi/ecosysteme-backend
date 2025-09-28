@@ -45,6 +45,11 @@ router.get("/", auth, async function (req, res, next) {
         "str_province_siege_sociale",
         "str_code",
         "createdAt",
+      ],
+      include:[
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
       ]
     });
 
