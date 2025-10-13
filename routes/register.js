@@ -33,6 +33,13 @@ router.post(
         str_domaine_activite,
         str_nombre_employe_actif,
         str_resultat_operationel,
+        str_moyen_logistique,
+        str_systeme_suivi_evaluation,
+        str_somme_recu_annee_N_en_dollars,
+        str_somme_recu_annee_N1_en_dollars,
+        str_somme_recu_annee_N2_en_dollars,
+        str_nombre_volontaire,
+
         sres_prise_en_charge,
         sres_prise_en_charge_description,
         sres_is_association_victime,
@@ -44,6 +51,7 @@ router.post(
         str_nombre_victime,
         sres_a_un_conseil_d_administration,
         sres_a_assemble_generale,
+        
         // Related data
         provinces = [], // Array of province IDs
         localites = [], // Array of { pro_id, localite: [items] } objects
@@ -83,7 +91,13 @@ router.post(
         str_statut: "soumis",
         str_statut_verification: "en cours de traitement",
         str_nombre_victime,
-        str_domaine_activite
+        str_domaine_activite,
+        str_moyen_logistique,
+        str_systeme_suivi_evaluation,
+        str_somme_recu_annee_N_en_dollars,
+        str_somme_recu_annee_N1_en_dollars,
+        str_somme_recu_annee_N2_en_dollars,
+        str_nombre_volontaire,
       });
 
       // Create province_structure relationships
