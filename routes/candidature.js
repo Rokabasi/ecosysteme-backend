@@ -10,7 +10,8 @@ const {
   Localite_operationnelle,
   Domaine,
   Structure_renseignement,
-  Traitement
+  Traitement,
+  Bailleur
 } = require("../models");
 const auth = require("../middleware/auth");
 
@@ -79,6 +80,7 @@ router.get('/:str_id',auth,async function(req,res,next){
           ]
          },
          { model : Document },
+         { model : Bailleur },
          { model : Structure_renseignement },
          { model : Affectation },
          { model : Traitement,

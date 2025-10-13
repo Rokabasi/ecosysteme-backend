@@ -7,6 +7,7 @@ const {
   Domaine_structure,
   Structure_renseignement,
   Document,
+  Bailleur,
 } = require("../models");
 const upload = require("../utils/multer");
 const auth = require("../middleware/auth");
@@ -39,6 +40,7 @@ router.post(
         str_somme_recu_annee_N1_en_dollars,
         str_somme_recu_annee_N2_en_dollars,
         str_nombre_volontaire,
+        bailleurs,
 
         sres_prise_en_charge,
         sres_prise_en_charge_description,
@@ -160,6 +162,18 @@ router.post(
         sres_a_assemble_generale:sres_a_assemble_generale,
         sres_a_un_conseil_d_administration:sres_a_un_conseil_d_administration
       });
+
+      // Create bailleurs
+      if (bailleurs && Array.isArray(bailleurs) && bailleurs.length > 0) {
+        await Promise.all(
+          bailleurs.map((bail_nom) =>
+            Bailleur.create({
+              str_id: structure.str_id,
+              bail_nom,
+            })
+          )
+        );
+      }
 
       // Map frontend field names to document designations
       const documentFieldMap = {
