@@ -15,6 +15,9 @@ module.exports = {
       str_id: {
         type: Sequelize.UUID
       },
+      pstr_nombre_bureau:{
+        type:Sequelize.INTEGER
+      },
     });
     await queryInterface.addConstraint('Province_structures', {
       fields:['str_id'],

@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Province_structure extends Model {
+  class Bailleur extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,30 +11,23 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Province_structure.belongsTo(models.Structure,{
+      Bailleur.belongsTo(models.Structure,{
         foreignKey: 'str_id'
-      })
-      Province_structure.belongsTo(models.Province,{
-        foreignKey: 'pro_id'
-      })
-      Province_structure.hasMany(models.Localite_operationnelle,{
-        foreignKey: 'pstr_id'
       })
     }
   }
-  Province_structure.init({
-    pstr_id:{
+  Bailleur.init({
+    bail_id:{
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    pro_id: DataTypes.UUID,
     str_id: DataTypes.UUID,
-    pstr_nombre_bureau: DataTypes.INTEGER
+    bail_nom: DataTypes.TEXT
   }, {
     sequelize,
-    modelName: 'Province_structure',
-    timestamps: false
+    modelName: 'Bailleur',
+    timestamps:false
   });
-  return Province_structure;
+  return Bailleur;
 };

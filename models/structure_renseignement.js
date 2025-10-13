@@ -29,7 +29,9 @@ module.exports = (sequelize, DataTypes) => {
     sres_is_association_victime_description: DataTypes.TEXT,
     sres_infos_victime_sexuel: DataTypes.BOOLEAN,
     sres_pret_a_collaborer: DataTypes.BOOLEAN,
-    sres_a_compte_bancaire: DataTypes.BOOLEAN
+    sres_a_compte_bancaire: DataTypes.BOOLEAN,
+    sres_a_assemble_generale: DataTypes.BOOLEAN,
+    sres_a_un_conseil_d_administration: DataTypes.BOOLEAN,
   }, {
     sequelize,
     modelName: 'Structure_renseignement',

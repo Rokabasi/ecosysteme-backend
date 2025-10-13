@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
       Structure.hasMany(models.Projet,{
         foreignKey: 'str_id'
       })
+      Structure.hasMany(models.Bailleur,{
+        foreignKey: 'str_id'
+      })
     }
   }
   Structure.init({
@@ -57,8 +60,8 @@ module.exports = (sequelize, DataTypes) => {
     str_telephone: DataTypes.STRING,
     str_email: DataTypes.STRING,
     str_site_web: DataTypes.STRING,
-    str_mission: DataTypes.TEXT,
     str_nombre_employe_actif: DataTypes.INTEGER,
+    str_nombre_volontaire: DataTypes.INTEGER,
     str_resultat_operationel: DataTypes.TEXT,
     str_niveau_risque: DataTypes.STRING,
     str_statut: DataTypes.STRING,
@@ -66,6 +69,12 @@ module.exports = (sequelize, DataTypes) => {
     str_is_reset: DataTypes.BOOLEAN,
     str_is_affected: DataTypes.BOOLEAN,
     str_nombre_victime: DataTypes.FLOAT,
+    str_moyen_logistique: DataTypes.TEXT,
+    str_systeme_suivi_evaluation: DataTypes.TEXT,
+    str_domaine_activite: DataTypes.STRING,
+    str_somme_recu_annee_N_en_dollars:DataTypes.FLOAT,
+    str_somme_recu_annee_N1_en_dollars:DataTypes.FLOAT,
+    str_somme_recu_annee_N2_en_dollars:DataTypes.FLOAT,
   }, {
     sequelize,
     modelName: 'Structure',

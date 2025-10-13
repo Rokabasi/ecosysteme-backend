@@ -32,7 +32,14 @@ module.exports = {
       },
       sres_a_compte_bancaire: {
         type: Sequelize.BOOLEAN
+      },
+      sres_a_assemble_generale :{
+        type: Sequelize.BOOLEAN
+      },
+      sres_a_un_conseil_d_administration: {
+        type: Sequelize.BOOLEAN
       }
+
     });
     await queryInterface.addConstraint('Structure_renseignements', {
       fields:['str_id'],

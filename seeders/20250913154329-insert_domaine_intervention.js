@@ -7,34 +7,28 @@ module.exports = {
     await queryInterface.bulkInsert('Domaines', [
       { 
         dom_id: uuidv4(), 
-        dom_designation: 'Droits humains',
-        dom_description: 'Promotion et protection des droits humains fondamentaux'
+        dom_designation: 'Santé (médical / psychosocial)',
       },
       { 
         dom_id: uuidv4(), 
-        dom_designation: 'Santé reproductives',
-        dom_description: 'Services et éducation en matière de santé reproductive'
+        dom_designation: 'Éducation / formation',
       },
       { 
         dom_id: uuidv4(), 
-        dom_designation: 'Lutte contre les VBG',
-        dom_description: 'Prévention et réponse aux violences basées sur le genre'
+        dom_designation: 'Réinsertion socio-économique / moyens de subsistance',
       },
       { 
         dom_id: uuidv4(), 
-        dom_designation: 'Justice sociale',
-        dom_description: 'Promotion de l\'égalité et de la justice sociale'
+        dom_designation: 'Accompagnement judiciaire',
       },
       { 
         dom_id: uuidv4(), 
-        dom_designation: 'Éducation à la paix',
-        dom_description: 'Initiatives de consolidation de la paix et de résolution des conflits'
+        dom_designation: 'Genre et droits humains',
       },
       { 
         dom_id: uuidv4(), 
-        dom_designation: 'Réinsertion économique',
-        dom_description: 'Programmes de réinsertion socio-économique'
-      }
+        dom_designation: 'Mémoire et commémoration',
+      },
     ], {});
   },
 

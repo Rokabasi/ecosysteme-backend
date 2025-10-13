@@ -18,6 +18,7 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+
 // GET all domaines
 router.get("/admin",auth ,async function (req, res, next) {
   try {

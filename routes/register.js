@@ -75,7 +75,6 @@ router.post(
         str_telephone,
         str_email,
         str_site_web,
-        str_mission,
         str_nombre_employe_actif,
         str_resultat_operationel,
         str_province_siege_sociale,
@@ -86,12 +85,15 @@ router.post(
 
       // Create province_structure relationships
       const provinceStructures = await Promise.all(
-        provinces.map((pro_id) =>
-          Province_structure.create({
+        provinces.map((pro_id) => {
+          // Find the corresponding nombreBureaux from localites
+          const localiteData = localites.find(loc => loc.pro_id === pro_id);
+          return Province_structure.create({
             pro_id,
             str_id: structure.str_id,
-          })
-        )
+            pstr_nombre_bureau: localiteData?.nombreBureaux || null,
+          });
+        })
       );
 
       // Create localite_operationnelle entries
@@ -211,14 +213,12 @@ router.get('/', async (req, res) => {
         str_province_siege_sociale: req.query.str_province_siege_sociale,
         str_annee_creation : req.query.str_annee_creation,
       },
-      attibutes: [
+      attributes: [
         "str_designation",
         "str_sigle",
-        "str_annee_creation",
         "str_adresse_siege_sociale",
         "str_province_siege_sociale",
-        "createdAt",
-        "str_staut_verification",
+        "str_statut_verification",
       ],
     });
     if (!structure) {
