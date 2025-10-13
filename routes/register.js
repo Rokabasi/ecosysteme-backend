@@ -30,7 +30,7 @@ router.post(
         str_telephone,
         str_email,
         str_site_web,
-        str_mission,
+        str_domaine_activite,
         str_nombre_employe_actif,
         str_resultat_operationel,
         sres_prise_en_charge,
@@ -42,6 +42,8 @@ router.post(
         sres_a_compte_bancaire,
         str_province_siege_sociale,
         str_nombre_victime,
+        sres_a_un_conseil_d_administration,
+        sres_a_assemble_generale,
         // Related data
         provinces = [], // Array of province IDs
         localites = [], // Array of { pro_id, localite: [items] } objects
@@ -80,7 +82,8 @@ router.post(
         str_province_siege_sociale,
         str_statut: "soumis",
         str_statut_verification: "en cours de traitement",
-        str_nombre_victime
+        str_nombre_victime,
+        str_domaine_activite
       });
 
       // Create province_structure relationships
@@ -140,6 +143,8 @@ router.post(
         sres_infos_victime_sexuel: sres_is_association_victime ? sres_infos_victime_sexuel ? true :null : sres_infos_victime_sexuel,
         sres_pret_a_collaborer : sres_is_association_victime ? sres_pret_a_collaborer ? true : null : sres_pret_a_collaborer,
         sres_a_compte_bancaire : sres_is_association_victime ? sres_a_compte_bancaire ? true : null : sres_a_compte_bancaire,
+        sres_a_assemble_generale:sres_a_assemble_generale,
+        sres_a_un_conseil_d_administration:sres_a_un_conseil_d_administration
       });
 
       // Map frontend field names to document designations
@@ -157,7 +162,8 @@ router.post(
         dernierpv:
           "Dernier procès-verbal d'assemblée générale/Conseil d'Administration",
         documentorganique: "Document organique",
-        listevictimesmembres: "Liste des victimes membres de l'association"
+        listevictimesmembres: "Liste des victimes membres de l'association",
+        annexeRib: "Annexe RIB",
       };
 
       let documents = [];
