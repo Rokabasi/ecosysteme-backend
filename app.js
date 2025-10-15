@@ -20,11 +20,9 @@ const dossierRouter = require('./routes/dossier');
 const projetRouter = require('./routes/projet');
 const dashboardRouter = require('./routes/dashboard');
 
-// view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// Appliquer CORS globalement
 app.use(cors());
 
 app.use(logger('dev'));
@@ -33,7 +31,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Public routes
 app.use('/', indexRouter);  
 app.use('/auth', authRouter);
 app.use('/provinces', provinceRouter);
@@ -46,7 +43,6 @@ app.use('/dossiers', dossierRouter);
 app.use('/projets', projetRouter);
 app.use('/dashboard', dashboardRouter);
 
-// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 // The "catchall" handler: for any request that doesn't

@@ -60,7 +60,6 @@ router.post(
         domaines = [], // Array of domain IDs
       } = structureData;
 
-      // Check for duplicate structure
       const existingStructure = await Structure.findOne({
         where: {
           str_designation,
@@ -76,11 +75,9 @@ router.post(
         });
       }
 
-      // Génération automatique du code
       let str_code;
       const prefix = sres_is_association_victime ? "ASSV" : "ONGD";
       
-      // Trouver la dernière structure du même type
       const lastStructure = await Structure.findOne({
         where: {
           str_code: {
@@ -92,12 +89,10 @@ router.post(
       });
 
       if (lastStructure && lastStructure.str_code) {
-        // Extraire le numéro et l'incrémenter
         const lastNumber = parseInt(lastStructure.str_code.split('-')[1]);
         const nextNumber = lastNumber + 1;
         str_code = `${prefix}-${String(nextNumber).padStart(4, '0')}`;
       } else {
-        // Premier code du type
         str_code = `${prefix}-0001`;
       }
 

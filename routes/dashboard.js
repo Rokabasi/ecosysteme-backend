@@ -233,7 +233,6 @@ router.get("/", auth, async function (req, res, next) {
         "str_annee_creation",
         "str_province_siege_sociale",
         "str_statut",
-        "str_statut_verification",
         "createdAt",
       ],
       include: [
@@ -249,14 +248,6 @@ router.get("/", auth, async function (req, res, next) {
     // Formatter recentOrgs
     const recentOrgs = structuresRecentes.map(structure => {
       const isAssociation = structure.Structure_renseignements?.[0]?.sres_is_association_victime;
-      let status = 'Soumise';
-      if (structure.str_statut === "accepté dans l'écosystème") {
-        status = 'Validée';
-      } else if (structure.str_statut_verification === "en cours de traitement") {
-        status = 'En cours';
-      } else if (structure.str_statut_verification === "rejeté") {
-        status = 'Rejetée';
-      }
 
       const date = new Date(structure.createdAt);
       const dateCreation = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
@@ -267,7 +258,7 @@ router.get("/", auth, async function (req, res, next) {
         type: isAssociation ? 'Association de victimes' : 'ONG',
         dateCreation,
         province: structure.str_province_siege_sociale,
-        status
+        status : structure.str_statut 
       };
     });
 
