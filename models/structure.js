@@ -47,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
     },
     str_code: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true
+      type: DataTypes.STRING,
+      unique: true
     },
     str_designation: DataTypes.STRING,
     str_sigle: DataTypes.STRING,

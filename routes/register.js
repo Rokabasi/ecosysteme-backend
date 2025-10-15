@@ -76,8 +76,34 @@ router.post(
         });
       }
 
+      // Génération automatique du code
+      let str_code;
+      const prefix = sres_is_association_victime ? "ASSV" : "ONGD";
+      
+      // Trouver la dernière structure du même type
+      const lastStructure = await Structure.findOne({
+        where: {
+          str_code: {
+            [require('sequelize').Op.like]: `${prefix}-%`
+          }
+        },
+        order: [['str_code', 'DESC']],
+        attributes: ['str_code']
+      });
+
+      if (lastStructure && lastStructure.str_code) {
+        // Extraire le numéro et l'incrémenter
+        const lastNumber = parseInt(lastStructure.str_code.split('-')[1]);
+        const nextNumber = lastNumber + 1;
+        str_code = `${prefix}-${String(nextNumber).padStart(4, '0')}`;
+      } else {
+        // Premier code du type
+        str_code = `${prefix}-0001`;
+      }
+
       // Create the structure
       const structure = await Structure.create({
+        str_code,
         str_designation,
         str_sigle: str_sigle || null,
         str_annee_creation,

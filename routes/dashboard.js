@@ -3,7 +3,9 @@ var router = express.Router();
 const { 
   Structure,
   Structure_renseignement,
-  Affectation
+  Affectation,
+  Domaine,
+  Domaine_structure
 } = require("../models");
 const { Sequelize } = require('sequelize');
 const auth = require("../middleware/auth");
@@ -26,18 +28,24 @@ router.get("/", auth, async function (req, res, next) {
       }]
     });
 
-    // Candidatures en cours de traitement
+    // Candidatures en cours de traitement (sans affectation)
     const candidaturesEnCours = await Structure.count({
-      where: { str_statut_verification: "en cours de traitement" },
-      include: [{
-        model: Affectation,
-        required: true
-      }]
+      where: {
+        str_statut_verification: "en cours de traitement",
+      }
     });
 
     // Candidatures rejetées
     const candidaturesRejetees = await Structure.count({
       where: { str_statut_verification: "rejeté" }
+    });
+
+    // Total de toutes les candidatures
+    const totalCandidatures = await Structure.count();
+
+    // Candidatures rejetées après due diligence
+    const candidaturesRejeteesApresDueDiligence = await Structure.count({
+      where: { str_statut: "rejeté après due diligence" }
     });
 
     // Structures par province (acceptées dans l'écosystème)
@@ -169,16 +177,114 @@ router.get("/", auth, async function (req, res, next) {
       }
     });
 
+    // Structures par domaine
+    const structuresParDomaine = await Domaine_structure.findAll({
+      attributes: [
+        'dom_id',
+        [Sequelize.fn('COUNT', Sequelize.fn('DISTINCT', Sequelize.col('str_id'))), 'count']
+      ],
+      include: [{
+        model: Domaine,
+        attributes: ['dom_designation']
+      }],
+      group: ['dom_id', 'Domaine.dom_id', 'Domaine.dom_designation'],
+      raw: true
+    });
+
+    // Compter les structures avec str_domaine_activite non nul
+    const structuresAutres = await Structure.count({
+      where: {
+        str_domaine_activite: {
+          [Sequelize.Op.ne]: null
+        }
+      }
+    });
+
+    // Créer domainData
+    const domainData = structuresParDomaine.map(item => ({
+      name: item['Domaine.dom_designation'],
+      value: parseInt(item.count)
+    }));
+
+    // Ajouter "Autres" si nécessaire
+    if (structuresAutres > 0) {
+      domainData.push({
+        name: 'Autres',
+        value: structuresAutres
+      });
+    }
+
+    // Structures récentes (5 dernières sans affectation)
+    const idsStructuresAffectees = await Affectation.findAll({
+      attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('str_id')), 'str_id']],
+      raw: true
+    }).then(results => results.map(r => r.str_id));
+
+    const structuresRecentes = await Structure.findAll({
+      where: { 
+        str_id: {
+          [Sequelize.Op.notIn]: idsStructuresAffectees.length > 0 ? idsStructuresAffectees : ['']
+        }
+      },
+      attributes: [
+        "str_id",
+        "str_designation",
+        "str_sigle",
+        "str_annee_creation",
+        "str_province_siege_sociale",
+        "str_statut",
+        "str_statut_verification",
+        "createdAt",
+      ],
+      include: [
+        { 
+          model: Structure_renseignement,
+          attributes: ['sres_is_association_victime']
+        }
+      ],
+      order: [["createdAt", "DESC"]],
+      limit: 5
+    });
+
+    // Formatter recentOrgs
+    const recentOrgs = structuresRecentes.map(structure => {
+      const isAssociation = structure.Structure_renseignements?.[0]?.sres_is_association_victime;
+      let status = 'Soumise';
+      if (structure.str_statut === "accepté dans l'écosystème") {
+        status = 'Validée';
+      } else if (structure.str_statut_verification === "en cours de traitement") {
+        status = 'En cours';
+      } else if (structure.str_statut_verification === "rejeté") {
+        status = 'Rejetée';
+      }
+
+      const date = new Date(structure.createdAt);
+      const dateCreation = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+
+      return {
+        id: structure.str_id,
+        name: structure.str_sigle || structure.str_designation,
+        type: isAssociation ? 'Association de victimes' : 'ONG',
+        dateCreation,
+        province: structure.str_province_siege_sociale,
+        status
+      };
+    });
+
     const data = {
       indicateurs: {
         ongAdmis,
         associationsVictimesAdmises,
         candidaturesEnCours,
-        candidaturesRejetees
+        candidaturesRejetees,
+        totalCandidatures,
+        candidaturesRejeteesApresDueDiligence
       },
       provincesData,
       statusData,
-      timeSeriesData
+      timeSeriesData,
+      domainData,
+      recentOrgs
     }
 
     return res.status(200).json(
