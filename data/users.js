@@ -92,7 +92,7 @@ const users = [
     id: 9,
     nom: 'Ndake',
     prenom: 'Nathan',
-    email: 'contoleur@ecosysteme.cd',
+    email: 'controleur@ecosysteme.cd',
     password: '123',
     direction: 'AUDIT',
     fonction: 'Controleur',
