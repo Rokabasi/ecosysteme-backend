@@ -136,7 +136,6 @@ router.post("/affectation", auth ,async function (req, res, next) {
         success: true,
       });
   } catch (error) {
-    console.log(error,'++++++++++++++++')
     res.status(500).send(error.message);
   }
 });
