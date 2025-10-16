@@ -7,7 +7,7 @@ const {
   Domaine,
   Domaine_structure
 } = require("../models");
-const { Sequelize } = require('sequelize');
+const { Sequelize, Op } = require('sequelize');
 const auth = require("../middleware/auth");
 
 // GET dashboard statistics
@@ -37,7 +37,10 @@ router.get("/", auth, async function (req, res, next) {
 
     // Candidatures rejetées
     const candidaturesRejetees = await Structure.count({
-      where: { str_statut_verification: "rejeté" }
+      where: { 
+        str_statut_verification: "rejeté",
+        str_statut: { [Op.ne]: "rejeté après due diligence" }
+      }
     });
 
     // Total de toutes les candidatures
@@ -224,7 +227,7 @@ router.get("/", auth, async function (req, res, next) {
       where: { 
         str_id: {
           [Sequelize.Op.notIn]: idsStructuresAffectees.length > 0 ? idsStructuresAffectees : ['']
-        }
+        },
       },
       attributes: [
         "str_id",
