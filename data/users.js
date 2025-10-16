@@ -2,8 +2,8 @@
 const users = [
   {
     id: 1,
-    nom: 'Admin',
-    prenom: 'System',
+    nom: 'NTOTO',
+    prenom: 'Jules',
     email: 'admin@ecosysteme.cd',
     password: '123', // In production, this should be hashed
     direction: 'Administration',
@@ -13,7 +13,7 @@ const users = [
   },
   { 
     id: 2,
-    nom: 'Dupont',
+    nom: 'FIKIRI',
     prenom: 'Jean',
     email: 'judiciaire@ecosysteme.cd',
     password: '123',
@@ -24,7 +24,7 @@ const users = [
   },
   {
     id: 3,
-    nom: 'Martin',
+    nom: 'KONGOLO',
     prenom: 'Sophie',
     email: 'etudes@ecosysteme.cd',
     password: '123',
@@ -35,7 +35,7 @@ const users = [
   },
   {
     id: 4,
-    nom: 'Dubois',
+    nom: 'NZITA',
     prenom: 'Pierre',
     email: 'reparations@ecosysteme.cd',
     password: '123',
@@ -46,7 +46,7 @@ const users = [
   },
   {
     id: 5,
-    nom: 'Leroy',
+    nom: 'ALIMASI',
     prenom: 'Marie',
     email: 'acces@ecosysteme.cd',
     password: '123',
@@ -57,7 +57,7 @@ const users = [
   },
   {
     id: 6,
-    nom: 'Petit',
+    nom: 'MATONDO',
     prenom: 'Thomas',
     email: 'numerique@ecosysteme.cd',
     password: '123',
@@ -68,7 +68,7 @@ const users = [
   },
   {
     id: 7,
-    nom: 'Durand',
+    nom: 'KIESE',
     prenom: 'Nathalie',
     email: 'audit@ecosysteme.cd',
     password: '123',
@@ -79,7 +79,7 @@ const users = [
   },
   {
     id: 8,
-    nom: 'Moreau',
+    nom: 'MIEZI',
     prenom: 'David',
     email: 'finance@ecosysteme.cd',
     password: '123',
@@ -90,7 +90,7 @@ const users = [
   },
   {
     id: 9,
-    nom: 'Ndake',
+    nom: 'KALONJI',
     prenom: 'Nathan',
     email: 'controleur@ecosysteme.cd',
     password: '123',
