@@ -1,16 +1,5 @@
 // Mock users data
 const users = [
-  {
-    id: 1,
-    nom: 'NTOTO',
-    prenom: 'Jules',
-    email: 'admin@ecosysteme.cd',
-    password: '123', // In production, this should be hashed
-    direction: 'Administration',
-    fonction: 'Administrateur',
-    profil: 'admin',
-    signature: '/signatures/admin.png'
-  },
   { 
     id: 2,
     nom: 'FIKIRI',
@@ -98,6 +87,39 @@ const users = [
     fonction: 'Controleur',
     profil: 'Controleur',
     signature: '/signatures/audit.png'
+  },
+    {
+    id: 10,
+    nom: 'LUZOLO',
+    prenom: 'Luc',
+    email: 'dir.etudes@ecosysteme.cd',
+    password: '123',
+    direction: 'ETUDES',
+    fonction: 'Chef de service',
+    profil: 'Directeur',
+    signature: '/signatures/etudes.png'
+  },
+  {
+    id: 11,
+    nom: 'MANGALA',
+    prenom: 'Joel',
+    email: 'dir.reparations@ecosysteme.cd',
+    password: '123',
+    direction: 'REPARATIONS',
+    fonction: 'Responsable',
+    profil: 'Directeur',
+    signature: '/signatures/reparations.png'
+  },
+  {
+    id: 12,
+    nom: 'BULA',
+    prenom: 'Dan',
+    email: 'dir.acces@ecosysteme.cd',
+    password: '123',
+    direction: 'ACCES A LA JUSTICE',
+    fonction: 'Conseillère',
+    profil: 'Directeur',
+    signature: '/signatures/acces.png'
   },
 ];
 
