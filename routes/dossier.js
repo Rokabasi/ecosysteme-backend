@@ -39,8 +39,8 @@ router.get("/", auth, async function (req, res, next) {
               aff_direction: req.query.direction,
               aff_id: {
                 [Op.eq]: sequelize.literal(`(
-                  SELECT aff_id FROM affectations 
-                  WHERE affectations.str_id = Structure.str_id 
+                  SELECT aff_id FROM Affectations 
+                  WHERE Affectations.str_id = Structure.str_id 
                   ORDER BY createdAt DESC LIMIT 1
                 )`)
               }
