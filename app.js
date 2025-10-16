@@ -18,6 +18,7 @@ const candidatureRouter = require('./routes/candidature');
 const directionRouter = require('./routes/direction');
 const dossierRouter = require('./routes/dossier');
 const filterdossierRouter = require('./routes/filterdossier');
+const exportdossierRouter = require('./routes/exportdossier');
 const projetRouter = require('./routes/projet');
 const dashboardRouter = require('./routes/dashboard');
 
@@ -42,6 +43,7 @@ app.use('/candidatures', candidatureRouter);
 app.use('/directions', directionRouter);
 app.use('/dossiers', dossierRouter);
 app.use('/filterdossier', filterdossierRouter);
+app.use('/exportdossier', exportdossierRouter);
 app.use('/projets', projetRouter);
 app.use('/dashboard', dashboardRouter);
 
