@@ -132,7 +132,7 @@ router.get("/", auth, async function (req, res, next) {
 
     const statusData = [
       { name: 'Soumises', value: soumises },
-      { name: 'En cours', value: enCours },
+      { name: 'En cours de traitement', value: enCours },
       { name: 'Validées', value: validees },
       { name: 'Rejetées', value: rejetees },
     ];

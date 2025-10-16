@@ -8,6 +8,7 @@ const {
   Domaine_structure
 } = require("../models");
 const auth = require("../middleware/auth");
+const sequelize = require("../config/db");
 const { Op } = require("sequelize");
 
 // recuperation de tous les dossiers affectés à sa direction avec filtres
@@ -28,7 +29,16 @@ router.get("/", auth, async function (req, res, next) {
     const includeClause = [
       {   
         model: Affectation, 
-        where: { aff_direction: req.query.direction },
+        where: { 
+          aff_direction: req.query.direction,
+          aff_id: {
+            [Op.eq]: sequelize.literal(`(
+              SELECT aff_id FROM affectations 
+              WHERE affectations.str_id = Structure.str_id 
+              ORDER BY createdAt DESC LIMIT 1
+            )`)
+          }
+        },
         required: true,
       },
       { model: Projet },

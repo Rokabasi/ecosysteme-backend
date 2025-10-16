@@ -35,7 +35,16 @@ router.get("/", auth, async function (req, res, next) {
       ],
       include:[
         {   model: Affectation, 
-            where: { aff_direction: req.query.direction },
+            where: { 
+              aff_direction: req.query.direction,
+              aff_id: {
+                [Op.eq]: sequelize.literal(`(
+                  SELECT aff_id FROM affectations 
+                  WHERE affectations.str_id = Structure.str_id 
+                  ORDER BY createdAt DESC LIMIT 1
+                )`)
+              }
+            },
             required: true,
          },
          { model : Projet},
@@ -386,6 +395,52 @@ router.patch("/duediligence", upload.any(), auth ,async function (req, res, next
   } catch (error) {
     console.log(error);
     
+    res.status(500).send(error.message);
+  }
+});
+
+//reaffectation de la structure à une autre direction
+router.patch("/affectation", auth ,async function (req, res, next) {
+  try {
+    const { str_id, direction, user } = req.body;
+    
+    const structure = await Structure.findByPk(str_id);
+    if (!structure) {
+      return res.status(404).json({ message: "Structure not found" });
+    }
+    
+    await Affectation.create({
+      str_id,
+      aff_direction: direction,
+    });
+
+    await Structure.update(
+      {
+        str_statut_verification: "en cours de traitement",
+        str_statut: "soumis",
+        str_is_affected:true
+      },
+      { where: { str_id } }
+    );
+
+    await Traitement.create({
+      str_id,
+      tr_usr_id: user.id,
+      tr_usr_nom: user.nom + " " + user.prenom,
+      tr_usr_mail: user.email,
+      tr_usr_direction: user.direction,
+      tr_usr_profil: user.profil,
+      tr_usr_signature: user.signature,
+      tr_action: `réaffectation du dossier à la direction ${direction}`
+    });
+
+    return res
+      .status(201)
+      .json({
+        message: "la structure a bien été affectée à la direction",
+        success: true,
+      });
+  } catch (error) {
     res.status(500).send(error.message);
   }
 });
