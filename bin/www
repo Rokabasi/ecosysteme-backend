@@ -21,6 +21,11 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
+// Augmenter les timeouts pour éviter les erreurs "network error"
+server.timeout = 300000; // 5 minutes (300 secondes)
+server.keepAliveTimeout = 65000; // 65 secondes
+server.headersTimeout = 66000; // 66 secondes
+
 /**
  * Listen on provided port, on all network interfaces.
  */

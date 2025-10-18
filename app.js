@@ -71,8 +71,8 @@ app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: '500mb' }));
+app.use(express.urlencoded({ extended: false, limit: '500mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
