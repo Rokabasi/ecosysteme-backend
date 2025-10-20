@@ -18,6 +18,7 @@ const candidatureRouter = require('./routes/candidature');
 const directionRouter = require('./routes/direction');
 const dossierRouter = require('./routes/dossier');
 const filterdossierRouter = require('./routes/filterdossier');
+const searchdossierRouter = require('./routes/searchdossier');
 const exportdossierRouter = require('./routes/exportdossier');
 const projetRouter = require('./routes/projet');
 const dashboardRouter = require('./routes/dashboard');
@@ -25,10 +26,8 @@ const dashboardRouter = require('./routes/dashboard');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// Configuration CORS détaillée pour permettre les requêtes entre sous-domaines
 const corsOptions = {
   origin: function (origin, callback) {
-    // Autoriser les requêtes sans origine (comme les appels API directs)
     if (!origin) return callback(null, true);
 
     // Liste des domaines autorisés
@@ -59,7 +58,7 @@ const corsOptions = {
     "Authorization",
     "x-access-token",
   ],
-  credentials: true, // Pour permettre les cookies dans les requêtes cross-origin
+  credentials: true, 
   preflightContinue: false,
   optionsSuccessStatus: 204,
 };
@@ -67,7 +66,6 @@ const corsOptions = {
 // Appliquer CORS globalement
 app.use(cors(corsOptions));
 
-// Assurer que OPTIONS répond correctement pour les requêtes préflight
 app.options("*", cors(corsOptions));
 
 app.use(logger('dev'));
@@ -86,30 +84,26 @@ app.use('/candidatures', candidatureRouter);
 app.use('/directions', directionRouter);
 app.use('/dossiers', dossierRouter);
 app.use('/filterdossier', filterdossierRouter);
+app.use('/searchdossier', searchdossierRouter);
 app.use('/exportdossier', exportdossierRouter);
 app.use('/projets', projetRouter);
 app.use('/dashboard', dashboardRouter);
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname+'/client/build/index.html'));
 });
 
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
   res.status(err.status || 500);
   res.render('error');
 });
