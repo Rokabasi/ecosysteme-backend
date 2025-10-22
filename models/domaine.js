@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     dom_designation: DataTypes.STRING,
     dom_description: DataTypes.TEXT,
+    dom_statut: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Domaine',
