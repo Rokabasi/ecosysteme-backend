@@ -229,6 +229,9 @@ router.get("/finance", auth, async function (req, res, next) {
 router.get('/:str_id',auth,async function(req,res,next){
   try {
     const { str_id } = req.params;
+    const user = req.user;
+    const { profil, direction } = user;
+
     const structure = await Structure.findOne({
       where: { str_id },
       include: [
@@ -251,10 +254,51 @@ router.get('/:str_id',auth,async function(req,res,next){
         { model : Projet }
       ]
     });
+
     if (!structure) {
       return res.status(404).json({ message: "Structure not found" });
     }
-    return res.status(200).json(structure);
+
+    // Contrôle d'accès basé sur le profil et la direction
+    // Direction générale et Contrôleur ont accès à tous les dossiers
+    if (profil === 'Directeur général' || profil === 'Directeur général adjoint' || profil === 'Contrôleur') {
+      return res.status(200).json(structure);
+    }
+
+    // Analyste et Directeur : accès uniquement aux dossiers de leur direction
+    if (profil === 'Analyste' || profil === 'Directeur') {
+      const affectations = structure.Affectations || [];
+      const derniereAffectation = affectations.length > 0 
+        ? affectations.reduce((latest, current) => 
+            new Date(current.createdAt) > new Date(latest.createdAt) ? current : latest
+          ) 
+        : null;
+
+      if (!derniereAffectation || derniereAffectation.aff_direction !== direction) {
+        return res.status(403).json({ message: "Accès refusé : ce dossier n'est pas affecté à votre direction" });
+      }
+      return res.status(200).json(structure);
+    }
+
+    // Auditeur : accès aux dossiers dont le statut n'est pas "soumis"
+    if (profil === 'Auditeur') {
+      if (structure.str_statut === 'soumis') {
+        return res.status(403).json({ message: "Accès refusé : les dossiers soumis ne sont pas accessibles aux auditeurs" });
+      }
+      return res.status(200).json(structure);
+    }
+
+    // Financier et Juriste : accès uniquement aux dossiers "accepté dans l'écosystème"
+    if (profil === 'Financier' || profil === 'Juriste') {
+      if (structure.str_statut !== "accepté dans l'écosystème") {
+        return res.status(403).json({ message: "Accès refusé : seuls les dossiers acceptés dans l'écosystème sont accessibles" });
+      }
+      return res.status(200).json(structure);
+    }
+
+    // Profil non reconnu
+    return res.status(403).json({ message: "Accès refusé : profil non autorisé" });
+
   } catch (error) {
    res.status(500).send(error.message); 
   }

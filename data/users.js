@@ -84,8 +84,8 @@ const users = [
     email: 'controleur@ecosysteme.cd',
     password: '123',
     direction: 'AUDIT',
-    fonction: 'Controleur',
-    profil: 'Controleur',
+    fonction: 'Contrôleur',
+    profil: 'Contrôleur',
     signature: '/signatures/audit.png'
   },
     {
