@@ -63,6 +63,38 @@ router.get("/", auth, async function (req, res, next) {
   }
 });
 
+router.get("/responsables", auth, async function (req, res, next) {
+  try {
+    const dossiers = await Structure.findAll({
+      attributes: [
+        "str_id",
+        "str_designation",
+        "str_statut",
+        "str_sigle",
+        "str_annee_creation",
+        "str_adresse_siege_sociale",
+        "str_province_siege_sociale",
+        "createdAt",
+        "str_code",
+      ],
+      include:[
+        {   model: Affectation,
+            required: true,
+         },
+         { model : Projet},
+         { model : Structure_renseignement,
+          attributes:['sres_is_association_victime']
+         }
+      ],
+      order: [["createdAt", "DESC"]]
+    });
+
+    return res.status(200).json(dossiers);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
 router.get("/controleurs", auth, async function (req, res, next) {
   try {
     const dossiers = await Structure.findAll({

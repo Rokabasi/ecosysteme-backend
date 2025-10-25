@@ -121,6 +121,28 @@ const users = [
     profil: 'Directeur',
     signature: '/signatures/acces.png'
   },
+    {
+    id: 13,
+    nom: 'NDINA',
+    prenom: 'Benjamin',
+    email: 'dg@ecosysteme.cd',
+    password: '123',
+    direction: 'DIRECTION GENERALE',
+    fonction: 'Responsable',
+    profil: 'Directeur général',
+    signature: '/signatures/reparations.png'
+  },
+  {
+    id: 14,
+    nom: 'BULAMBA',
+    prenom: 'Daniel',
+    email: 'dga@ecosysteme.cd',
+    password: '123',
+    direction: 'DIRECTION GENERALE',
+    fonction: 'Conseillère',
+    profil: 'Directeur général adjoint',
+    signature: '/signatures/acces.png'
+  },
 ];
 
 module.exports = users;
